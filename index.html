@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo de Criptografia Web</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <h1 contenteditable="true" class="editable-text">Practica de criptografia</h1>
+        <p contenteditable="true" class="hero-copy editable-text">
+          Interfaz sencilla para revisar cifrado simetrico, cifrado asimetrico,
+          funciones hash y firmas digitales con tres usuarios.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <p id="appStatus" class="status-note">Inicializando usuarios y llaves...</p>
+      </div>
+    </section>
+
+    <section id="labSection" class="view-section active">
+    <section class="panel users-panel">
+      <div class="section-title">
+        <h2>Usuarios</h2>
+        <p>La cuadrícula representa a quienes participan en las pruebas.</p>
+      </div>
+      <div id="usersGrid" class="users-grid"></div>
+    </section>
+
+    <section class="demo-carousel" aria-label="Pruebas de criptografia">
+      <div class="carousel-toolbar">
+        <div>
+          <p class="eyebrow">Laboratorio</p>
+          <h2>Pruebas criptograficas</h2>
+        </div>
+      </div>
+
+      <div class="carousel-stage">
+        <button id="prevDemoSlide" class="carousel-btn carousel-btn-prev" type="button" aria-label="Prueba anterior">
+          <span aria-hidden="true">&lt;</span>
+        </button>
+
+        <div class="carousel-viewport" tabindex="0" aria-live="polite">
+          <div id="cryptoCarouselTrack" class="carousel-track">
+      <article class="panel demo-card carousel-slide" data-carousel-title="Cifrado simetrico">
+        <div class="section-title">
+          <h2>Cifrado simetrico</h2>
+          <p>AES-GCM con una clave compartida por una pareja de usuarios.</p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Emisor
+            <select id="symSender"></select>
+          </label>
+          <label>
+            Receptor
+            <select id="symReceiver"></select>
+          </label>
+        </div>
+
+        <label>
+          Mensaje
+          <textarea id="symMessage" rows="4">Hola Luis, este mensaje usa cifrado simetrico.</textarea>
+        </label>
+
+        <button id="runSymmetricBtn" class="secondary-btn">Probar cifrado simetrico</button>
+        <div id="symResult" class="result-box"></div>
+      </article>
+
+      <article class="panel demo-card carousel-slide" data-carousel-title="Cifrado asimetrico">
+        <div class="section-title">
+          <h2>Cifrado asimetrico</h2>
+          <p>RSA-OAEP usando la llave publica del receptor.</p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Emisor
+            <select id="asymSender"></select>
+          </label>
+          <label>
+            Receptor
+            <select id="asymReceiver"></select>
+          </label>
+        </div>
+
+        <label>
+          Mensaje
+          <textarea id="asymMessage" rows="4">Hola Marta, este mensaje usa cifrado asimetrico.</textarea>
+        </label>
+
+        <button id="runAsymmetricBtn" class="secondary-btn">Probar cifrado asimetrico</button>
+        <div id="asymResult" class="result-box"></div>
+      </article>
+
+      <article class="panel demo-card carousel-slide" data-carousel-title="Funciones hash">
+        <div class="section-title">
+          <h2>Funciones hash</h2>
+          <p>Se calculan SHA-256 y SHA-512 y luego se prueba un ataque a la integridad.</p>
+        </div>
+
+        <label>
+          Mensaje original
+          <textarea id="hashMessage" rows="4">Transferencia aprobada por 500 pesos.</textarea>
+        </label>
+
+        <label>
+          Mensaje alterado
+          <textarea id="hashTampered" rows="4">Transferencia aprobada por 5000 pesos.</textarea>
+        </label>
+
+        <button id="runHashBtn" class="secondary-btn">Probar hash e integridad</button>
+        <div id="hashResult" class="result-box"></div>
+      </article>
+
+      <article class="panel demo-card carousel-slide" data-carousel-title="Firmas digitales">
+        <div class="section-title">
+          <h2>Firmas digitales</h2>
+          <p>RSA-PSS + hash con una vista resumida y un laboratorio detallado en modal.</p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Firmante
+            <select id="signUser"></select>
+          </label>
+          <label>
+            Verificador
+            <select id="signVerifier"></select>
+          </label>
+        </div>
+
+        <label>
+          Mensaje firmado
+          <textarea id="signMessage" rows="4">Autorizo el envio del expediente final.</textarea>
+        </label>
+
+        <div class="action-row">
+          <button id="runSignatureBtn" class="secondary-btn">Generar firma digital</button>
+          <button id="openSignatureModalBtn" class="primary-btn">Ver modal detallado</button>
+        </div>
+        <div id="signatureResult" class="result-box"></div>
+      </article>
+          </div>
+        </div>
+
+        <button id="nextDemoSlide" class="carousel-btn carousel-btn-next" type="button" aria-label="Prueba siguiente">
+          <span aria-hidden="true">&gt;</span>
+        </button>
+      </div>
+
+      <div id="cryptoCarouselDots" class="carousel-dots" aria-label="Seleccionar prueba"></div>
+    </section>
+    </section>
+
+    <section id="demoSection" class="view-section">
+      <section class="panel">
+        <div class="section-title">
+          <h2 contenteditable="true" class="editable-text">Mensajes entre usuarios</h2>
+          <p contenteditable="true" class="editable-text">
+            Puedes cambiar los textos y volver a generar la vista.
+          </p>
+        </div>
+
+        <div class="panel simple-panel">
+          <div class="section-title compact">
+            <h3>Textos</h3>
+          </div>
+          <label>
+            Texto 1
+            <textarea id="textoMensaje1" rows="2"></textarea>
+          </label>
+          <label>
+            Texto 2
+            <textarea id="textoMensaje2" rows="2"></textarea>
+          </label>
+          <label>
+            Texto 3
+            <textarea id="textoMensaje3" rows="2"></textarea>
+          </label>
+          <button id="updateMessagesBtn" class="secondary-btn">Actualizar mensajes</button>
+        </div>
+
+        <div id="demoSummary" class="chip-list"></div>
+        <div id="messagesGrid" class="messages-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="signatureModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-shell signature-modal-shell" role="dialog" aria-modal="true" aria-labelledby="signatureModalTitle">
+      <button id="closeSignatureModal" class="modal-close-btn" type="button" aria-label="Cerrar modal de firma digital">Cerrar</button>
+      <div id="signatureModalBody"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
